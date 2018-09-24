@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+      "plugins": [
+          { "transform": "./ts-transform/accessorChainTransform.ts" },
+      ],
+      "baseUrl": ".",
+      "paths": {
+        "tgs": ["lib/index"],
+        "tgs/*": ["lib/*"]
+    },
+    "strict": true
+  },
+  "exclude": ["node_modules", "ts-transform/**/*"],
+}
