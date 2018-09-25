@@ -11,6 +11,10 @@
     "ttypescript": "^1.5.5",
     "typescript": "^3.0.3"
   },
+  "scripts": {
+    "test": "ava",
+    "test:transform": "TS_NODE_COMPILER=ttypescript ava"
+  },
   "ava": {
     "require": [
       "./test/bootstrap"

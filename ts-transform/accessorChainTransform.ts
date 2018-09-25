@@ -41,25 +41,33 @@ function processChainAccessExpression(node: ts.Node, output: ts.Expression[]) {
   }
 }
 
-function createSetAccessorExpression(node: ts.Node, name: string) {
+function createSetAccessorExpression(
+  node: ts.Node,
+  expr: ts.Expression,
+  id: ts.Identifier
+) {
   const chain: ts.Expression[] = [];
   processChainAccessExpression(node, chain);
 
   chain.pop();
-  return ts.createCall(ts.createIdentifier("createSetter"), undefined, [
-    ts.createIdentifier(name),
+  return ts.createCall(id, undefined, [
+    expr,
     ts.createArrayLiteral(chain.reverse())
   ]);
 }
 
 function createVisitorForContext(
-  context: ts.TransformationContext
+  context: ts.TransformationContext,
+  helpers: { get?: string; set?: string }
 ): ts.Visitor {
   const visitor: ts.Visitor = node => {
     if (ts.isCallExpression(node)) {
       const calleeExpression = node.expression;
-      // TODO: proper function identification
-      if (ts.isIdentifier(calleeExpression) && calleeExpression.text == "get") {
+
+      if (
+        ts.isIdentifier(calleeExpression) &&
+        helpers.get === calleeExpression.text
+      ) {
         const accessorArg = node.arguments[1];
         if (ts.isArrowFunction(accessorArg)) {
           return ts.createCall(
@@ -79,24 +87,14 @@ function createVisitorForContext(
         }
       } else if (
         ts.isIdentifier(calleeExpression) &&
-        calleeExpression.text == "set"
+        helpers.set === calleeExpression.text
       ) {
         const accessorArg = node.arguments[1];
         if (ts.isArrowFunction(accessorArg)) {
-          return ts.createCall(
-            ts.createArrowFunction(
-              accessorArg.modifiers,
-              accessorArg.typeParameters,
-              accessorArg.parameters,
-              accessorArg.type,
-              accessorArg.equalsGreaterThanToken,
-              createSetAccessorExpression(
-                accessorArg.body,
-                accessorArg.parameters[0].getText()
-              )
-            ),
-            undefined,
-            [node.arguments[0]]
+          return createSetAccessorExpression(
+            accessorArg.body,
+            node.arguments[0],
+            calleeExpression
           );
         } else {
           throw new Error(`Unexpected node ${node.kind}`);
@@ -109,7 +107,42 @@ function createVisitorForContext(
   return visitor;
 }
 
+const IMPORT_MODULE_SPECIFIER_RX = /^tgs\/?/;
+
 export default (_program: ts.Program) => (
   context: ts.TransformationContext
-) => (sourceFile: ts.SourceFile) =>
-  ts.visitNode(sourceFile, createVisitorForContext(context));
+) => (sourceFile: ts.SourceFile) => {
+  const helperLocals = {
+    get: undefined,
+    set: undefined
+  };
+
+  sourceFile.statements.forEach(s => {
+    if (ts.isImportDeclaration(s) && ts.isStringLiteral(s.moduleSpecifier)) {
+      if (s.importClause && s.importClause.namedBindings) {
+        if (s.moduleSpecifier.text.match(IMPORT_MODULE_SPECIFIER_RX)) {
+          if (ts.isNamedImports(s.importClause.namedBindings)) {
+            s.importClause.namedBindings.elements.forEach(e => {
+              if (e.propertyName && e.propertyName.text in helperLocals) {
+                helperLocals[e.propertyName.text] = e.name.text;
+              } else if (!e.propertyName && e.name.text in helperLocals) {
+                helperLocals[e.name.text] = e.name.text;
+              }
+            });
+          }
+        }
+      }
+    }
+  });
+
+  for (const k in helperLocals) {
+    if (helperLocals[k]) {
+      return ts.visitNode(
+        sourceFile,
+        createVisitorForContext(context, helperLocals)
+      );
+    }
+  }
+
+  return sourceFile;
+};

@@ -11,7 +11,8 @@
         "tgs": ["lib/index"],
         "tgs/*": ["lib/*"]
     },
-    "strict": true
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "exclude": ["node_modules", "ts-transform/**/*"],
 }

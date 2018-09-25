@@ -44,5 +44,8 @@ export function set<R extends object, T>(
   root: Readonly<R>,
   accessor: ((_: Readonly<R>) => T)
 ): (newValue: T | ((_: T, root: R) => T)) => R {
-  return createSetForAccessorChain(root, retrieveAccessorChain<R, T>(accessor));
+  return createSetForAccessorChain(
+    root,
+    Array.isArray(accessor) ? accessor : retrieveAccessorChain<R, T>(accessor)
+  );
 }
