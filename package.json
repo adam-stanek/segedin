@@ -8,6 +8,8 @@
     "type": "git",
     "url": "git://github.com/adam-stanek/segedin.git"
   },
+  "main": "dist/lib/index.js",
+  "typings": "dist/lib/index.d.ts",
   "dependencies": {
     "lodash.isequal": "^4.5.0"
   },
@@ -21,6 +23,8 @@
     "typescript": "^3.0.3"
   },
   "scripts": {
+    "build:lib": "tsc -p lib",
+    "build:ts-transform": "tsc -p ts-transform",
     "test": "ava",
     "test:transform": "TS_NODE_COMPILER=ttypescript ava",
     "prettier": "prettier --write \"lib/**/*.ts\" \"ts-transform/**/*.ts\" \"test/**/*.{js,ts}\" README.md tsconfig.json .prettierrc"

@@ -12,5 +12,5 @@
     "strict": true,
     "suppressImplicitAnyIndexErrors": true
   },
-  "exclude": ["node_modules", "ts-transform/**/*"]
+  "exclude": ["node_modules"]
 }
