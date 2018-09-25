@@ -1,47 +1,47 @@
 interface Accessor {
-  chain: Array<string | symbol>;
+  chain: Array<string | symbol>
   properties: {
     [k: string]: {
-      accessor: Accessor;
-      proxy: any;
-    };
-  };
+      accessor: Accessor
+      proxy: any
+    }
+  }
 }
 
-const ACCESSOR_PROP_NAME = Symbol("accessor");
+const ACCESSOR_PROP_NAME = Symbol('accessor')
 
 const ProxyHandlers: ProxyHandler<Accessor> = {
   get(accessorObj: Accessor, propName: string | symbol) {
     if (propName === ACCESSOR_PROP_NAME) {
-      return accessorObj;
+      return accessorObj
     }
 
     if (!accessorObj.properties[propName as string]) {
       const childAccessor = {
         chain: [...accessorObj.chain, propName],
-        properties: {}
-      };
+        properties: {},
+      }
 
       accessorObj.properties[propName as string] = {
         accessor: childAccessor,
-        proxy: new Proxy(childAccessor, ProxyHandlers)
-      };
+        proxy: new Proxy(childAccessor, ProxyHandlers),
+      }
     }
 
-    return accessorObj.properties[propName as string].proxy;
-  }
-};
+    return accessorObj.properties[propName as string].proxy
+  },
+}
 
 export function retrieveAccessorChain<R extends object, T>(
-  callback: (_: Readonly<R>) => T
+  callback: (_: Readonly<R>) => T,
 ): Array<string | symbol> {
   const result = callback(new Proxy(
     {
       chain: [],
-      properties: {}
+      properties: {},
     },
-    ProxyHandlers
-  ) as any) as any;
+    ProxyHandlers,
+  ) as any) as any
 
-  return result[ACCESSOR_PROP_NAME].chain;
+  return result[ACCESSOR_PROP_NAME].chain
 }

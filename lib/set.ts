@@ -1,25 +1,25 @@
-import objDeepEqual = require("lodash.isequal");
-import { retrieveAccessorChain } from "./accessor";
+import objDeepEqual = require('lodash.isequal')
+import { retrieveAccessorChain } from './accessor'
 
 const createSetForAccessorChain = <T, R>(
   root: R,
-  accessors: Array<string | symbol>
+  accessors: Array<string | symbol>,
 ) => (value: T | ((_: T, root: R) => T)): R => {
-  const currentNode: any = root;
+  const currentNode: any = root
 
   if (accessors.length === 0) {
     // currentNode is the target
     const newNode: any =
-      value instanceof Function ? value(currentNode, root) : value;
+      value instanceof Function ? value(currentNode, root) : value
 
     // Return currentNode if structural equality
-    return objDeepEqual(currentNode, newNode) ? currentNode : newNode;
+    return objDeepEqual(currentNode, newNode) ? currentNode : newNode
   } else {
     // currentNode is a parent of the target
-    const [key, ...nextAccessors] = accessors;
+    const [key, ...nextAccessors] = accessors
     const newValue = createSetForAccessorChain(currentNode[key], nextAccessors)(
-      value
-    );
+      value,
+    )
 
     // Return currentNode if identity equality
     return currentNode[key] === newValue
@@ -28,24 +28,24 @@ const createSetForAccessorChain = <T, R>(
         ? [
             ...currentNode.slice(0, Number(key)),
             newValue,
-            ...currentNode.slice(Number(key) + 1)
+            ...currentNode.slice(Number(key) + 1),
           ]
         : Object.assign(
             Object.create(Object.getPrototypeOf(currentNode)),
             currentNode,
             {
-              [key]: newValue
-            }
-          );
+              [key]: newValue,
+            },
+          )
   }
-};
+}
 
 export function set<R extends object, T>(
   root: Readonly<R>,
-  accessor: ((_: Readonly<R>) => T)
+  accessor: ((_: Readonly<R>) => T),
 ): (newValue: T | ((_: T, root: R) => T)) => R {
   return createSetForAccessorChain(
     root,
-    Array.isArray(accessor) ? accessor : retrieveAccessorChain<R, T>(accessor)
-  );
+    Array.isArray(accessor) ? accessor : retrieveAccessorChain<R, T>(accessor),
+  )
 }

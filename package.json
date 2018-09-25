@@ -13,7 +13,8 @@
   },
   "scripts": {
     "test": "ava",
-    "test:transform": "TS_NODE_COMPILER=ttypescript ava"
+    "test:transform": "TS_NODE_COMPILER=ttypescript ava",
+    "prettier": "prettier --write \"lib/**/*.ts\" \"test/**/*.{js,ts}\" README.md tsconfig.json .prettierrc"
   },
   "ava": {
     "require": [
