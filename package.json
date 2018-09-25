@@ -1,4 +1,13 @@
 {
+  "name": "segedin",
+  "description": "Type-safe getters/setters for nested object structures",
+  "version": "0.1.0",
+  "author": "Adam Staněk <adam.stanek@v3net.cz>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/adam-stanek/segedin.git"
+  },
   "dependencies": {
     "lodash.isequal": "^4.5.0"
   },
@@ -14,7 +23,7 @@
   "scripts": {
     "test": "ava",
     "test:transform": "TS_NODE_COMPILER=ttypescript ava",
-    "prettier": "prettier --write \"lib/**/*.ts\" \"test/**/*.{js,ts}\" README.md tsconfig.json .prettierrc"
+    "prettier": "prettier --write \"lib/**/*.ts\" \"ts-transform/**/*.ts\" \"test/**/*.{js,ts}\" README.md tsconfig.json .prettierrc"
   },
   "ava": {
     "require": [

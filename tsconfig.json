@@ -6,8 +6,8 @@
     "plugins": [{ "transform": "./ts-transform/accessorChainTransform.ts" }],
     "baseUrl": ".",
     "paths": {
-      "tgs": ["lib/index"],
-      "tgs/*": ["lib/*"]
+      "segedin": ["lib/index"],
+      "segedin/*": ["lib/*"]
     },
     "strict": true,
     "suppressImplicitAnyIndexErrors": true

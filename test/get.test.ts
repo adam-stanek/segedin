@@ -1,5 +1,5 @@
 import test from 'ava'
-import { get as g } from 'tgs/get'
+import { get as g } from 'segedin/get'
 
 test('get', t => {
   const obj = { a: [{ b: { c: 'foo' } }] }

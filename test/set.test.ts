@@ -1,5 +1,5 @@
 import test from 'ava'
-import { set } from 'tgs/set'
+import { set } from 'segedin/set'
 
 test('basic tree update', t => {
   const tree = { b: { c: true }, d: { e: true } }
