@@ -1,4 +1,4 @@
-import objDeepEqual = require('lodash.isequal')
+import { isEqual as objDeepEqual } from 'lodash'
 import { retrieveAccessorChain } from './accessor'
 
 const createSetForAccessorChain = <T, R>(
