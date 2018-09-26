@@ -56,7 +56,7 @@ To get the best out of this library I recommend to use it together with bundled 
 - [ts-loader](https://github.com/TypeStrong/ts-loader#getcustomtransformers-----before-transformerfactory-after-transformerfactory--)
 - [awesome-typescript-loader](https://github.com/s-panferov/awesome-typescript-loader#getcustomtransformers-string--program-tsprogram--tscustomtransformers--undefined-defaultundefined)
 
-## Performance considerations
+## Performance considerations
 
 This library is meant as a replacement for lodash set / get helpers which come with decent performance hit. Their accessor has to be constructed from string (unless array is used) and that comes with a price of parsing it before walking the object.
 
@@ -78,4 +78,4 @@ If it is used together with bundled TS transformation there is no need for Proxy
 
 ## Credits
 
-My thanks to [@bufi](https://github.com/bufi) for awesome project name :)
+My thanks to [@bufi](https://github.com/bufi) for awesome project name suggestion :)
