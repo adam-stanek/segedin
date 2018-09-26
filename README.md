@@ -8,8 +8,9 @@ Type-safe getters/setters for nested object structures.
 import { set, get } from 'segedin'
 
 // Setting deeply nested property
-const obj = { a: { b: { c: 42 } } }
+const obj = { a: { b: { c: 40 } } }
 const updatedObj = set(obj, _ => _.a.b.c)(42)
+const updatedObj2 = set(obj, _ => _.a.b.c)((value) => value + 1)
 
 // Getting nested property
 const obj2 = { a: [{ b: { c: 'foo' } }] }
