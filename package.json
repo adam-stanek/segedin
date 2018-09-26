@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build:lib": "tsc -p lib",
-    "build:ts-transform": "tsc -p ts-transform",
+    "build:transform": "tsc -p ts-transform",
     "test": "ava",
     "test:transform": "TS_NODE_COMPILER=ttypescript ava",
     "prettier": "prettier --write \"lib/**/*.ts\" \"ts-transform/**/*.ts\" \"test/**/*.{js,ts}\" README.md tsconfig.json .prettierrc"

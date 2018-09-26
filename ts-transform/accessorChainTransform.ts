@@ -70,6 +70,16 @@ function createVisitorForContext(
       ) {
         const accessorArg = node.arguments[1]
         if (ts.isArrowFunction(accessorArg)) {
+          let expr = createGetAccessorExpression(accessorArg.body)
+
+          if (node.arguments[2]) {
+            expr = ts.createBinary(
+              expr,
+              ts.SyntaxKind.BarBarToken,
+              node.arguments[2],
+            )
+          }
+
           return ts.createCall(
             ts.createArrowFunction(
               accessorArg.modifiers,
@@ -77,7 +87,7 @@ function createVisitorForContext(
               accessorArg.parameters,
               accessorArg.type,
               accessorArg.equalsGreaterThanToken,
-              createGetAccessorExpression(accessorArg.body),
+              expr,
             ),
             undefined,
             [node.arguments[0]],
