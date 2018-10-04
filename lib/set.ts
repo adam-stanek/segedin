@@ -41,8 +41,8 @@ const createSetForAccessorChain = <T, R>(
 }
 
 export function set<R extends object, T>(
-  root: Readonly<R>,
-  accessor: ((_: Readonly<R>) => T),
+  root: R,
+  accessor: ((_: R) => T),
 ): (newValue: T | ((_: T, root: R) => T)) => R {
   return createSetForAccessorChain(
     root,

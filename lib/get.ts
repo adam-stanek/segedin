@@ -1,8 +1,8 @@
 import { retrieveAccessorChain } from './accessor'
 
 export function get<R extends object, T>(
-  root: Readonly<R>,
-  accessor: ((_: Readonly<R>) => T),
+  root: R,
+  accessor: ((_: R) => T),
   defaultValue?: T,
 ): T {
   const chain = retrieveAccessorChain<R, T>(accessor)
