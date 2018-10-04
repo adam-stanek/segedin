@@ -10,6 +10,14 @@ test('basic tree update', t => {
   t.is(updatedTree.b.c, false)
 })
 
+test('array update', t => {
+  const input = [{ a: 'foo' }, { b: 'bar' }]
+  const updatedTree = set(input, _ => _[0].a)('foo 2')
+
+  t.notDeepEqual(input, updatedTree)
+  t.is(updatedTree[0].a, 'foo 2')
+})
+
 test('accepts thunk as a value', async t => {
   const tree = { b: { c: true } }
   const updatedTree = set(tree, _ => _.b.c)(c => !c)
