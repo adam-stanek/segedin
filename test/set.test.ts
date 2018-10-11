@@ -18,6 +18,14 @@ test('array update', t => {
   t.is(updatedTree[0].a, 'foo 2')
 })
 
+test('array update on non-existing index', t => {
+  const input = { items: ['a'] }
+  const updatedObj = set(input, _ => _.items[2])('c')
+
+  t.notDeepEqual(input, updatedObj)
+  t.deepEqual(updatedObj.items, ['a', undefined, 'c'])
+})
+
 test('accepts thunk as a value', async t => {
   const tree = { b: { c: true } }
   const updatedTree = set(tree, _ => _.b.c)(c => !c)

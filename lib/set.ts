@@ -21,22 +21,22 @@ const createSetForAccessorChain = <T, R>(
       value,
     )
 
-    // Return currentNode if identity equality
-    return currentNode[key] === newValue
-      ? currentNode
-      : Array.isArray(currentNode)
-        ? [
-            ...currentNode.slice(0, Number(key)),
-            newValue,
-            ...currentNode.slice(Number(key) + 1),
-          ]
-        : Object.assign(
-            Object.create(Object.getPrototypeOf(currentNode)),
-            currentNode,
-            {
-              [key]: newValue,
-            },
-          )
+    // Return currentNode if new value is identical
+    if (currentNode[key] === newValue) {
+      return currentNode
+    } else if (Array.isArray(currentNode)) {
+      const copy = currentNode.slice()
+      copy[Number(key)] = newValue
+      return copy as any
+    } else {
+      return Object.assign(
+        Object.create(Object.getPrototypeOf(currentNode)),
+        currentNode,
+        {
+          [key]: newValue,
+        },
+      )
+    }
   }
 }
 
