@@ -1,5 +1,5 @@
 interface Accessor {
-  chain: Array<string | symbol>
+  chain: Array<number | string | symbol>
   properties: {
     [k: string]: {
       accessor: Accessor
@@ -17,8 +17,9 @@ const ProxyHandlers: ProxyHandler<Accessor> = {
     }
 
     if (!accessorObj.properties[propName as string]) {
+      const numValue = Number(propName)
       const childAccessor = {
-        chain: [...accessorObj.chain, propName],
+        chain: [...accessorObj.chain, isNaN(numValue) ? propName : numValue],
         properties: {},
       }
 

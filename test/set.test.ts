@@ -26,6 +26,30 @@ test('array update on non-existing index', t => {
   t.deepEqual(updatedObj.items, ['a', undefined, 'c'])
 })
 
+test('nested update on non-existing property', t => {
+  const input = {} as { a: { b: { c: number } } }
+  const updatedObj = set(input, _ => _.a.b.c)(123)
+
+  t.notDeepEqual(input, updatedObj)
+  t.deepEqual(updatedObj, { a: { b: { c: 123 } } })
+})
+
+test('nested array update on non-existing index', t => {
+  const input = { items: [{ value: 'a' }] }
+  const updatedObj = set(input, _ => _.items[2].value)('c')
+
+  t.notDeepEqual(input, updatedObj)
+  t.deepEqual(updatedObj.items, [{ value: 'a' }, undefined, { value: 'c' }])
+})
+
+test('nested array update on non-existing array', t => {
+  const input = {} as { items: Array<{ value: number }> }
+  const updatedObj = set(input, _ => _.items[2].value)(123)
+
+  t.notDeepEqual(input, updatedObj)
+  t.deepEqual(updatedObj, { items: [undefined, undefined, { value: 123 }] })
+})
+
 test('accepts thunk as a value', async t => {
   const tree = { b: { c: true } }
   const updatedTree = set(tree, _ => _.b.c)(c => !c)
