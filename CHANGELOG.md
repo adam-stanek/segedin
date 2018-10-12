@@ -1,3 +1,7 @@
+# 1.1.0 (October 12, 2018)
+
+- `set` now works even on undefined properties and items.
+
 # 1.0.0 (October 11, 2018)
 
 - Fixed issue when setting out-of-bounds array indices.
