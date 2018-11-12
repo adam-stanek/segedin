@@ -1,7 +1,7 @@
 {
   "name": "segedin",
   "description": "Type-safe getters/setters for nested object structures",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Adam Staněk <adam.stanek@v3net.cz>",
   "license": "MIT",
   "repository": {

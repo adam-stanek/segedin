@@ -1,3 +1,7 @@
+# 1.2.0 (November 12, 2018)
+
+- Targeting `ES5` so that this library can be used directly without transpilation (IE11 syntax error fixed).
+
 # 1.1.0 (October 12, 2018)
 
 - `set` now works even on undefined properties and items.
